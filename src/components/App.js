@@ -1,18 +1,26 @@
-import { useState, useEffect } from 'react';
+import { Switch, Route } from 'react-router-dom';
 
-const KEY = 'b1f929257613a8009e6ee3984e7228b9';
+import Container from './Container/Container';
+import Navigation from './Navigation/Navigation';
+
+import HomePage from '../pages/HomePage/HomePage';
 
 function App() {
-  const [movies, setMovies] = useState([]);
+  return (
+    <Container>
+      <Navigation />
 
-  useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${KEY}`)
-      .then(responce => responce.json())
-      .then(movies => setMovies(movies.results));
-  }, []);
+      <Switch>
+        <Route path="/" exact>
+          <HomePage />
+        </Route>
 
-  console.log(movies);
-  return <div>Hi</div>;
+        <Route path="/movies" exact>
+          <div>Movies</div>
+        </Route>
+      </Switch>
+    </Container>
+  );
 }
 
 export default App;
