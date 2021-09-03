@@ -1,33 +1,44 @@
 import { useState, useEffect } from 'react';
-
-const KEY = 'b1f929257613a8009e6ee3984e7228b9';
+import { Link } from 'react-router-dom';
+import './HomePage.css';
+import * as popularMoviesAPI from '../../service/movies-api';
+import defaultImages from '../../images/defaultImg.jpg';
 
 function HomePage() {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(null);
 
   useEffect(() => {
-    fetch(
-      `https://api.themoviedb.org/3/trending/movie/day?api_key=${KEY}&page=1`,
-    )
-      .then(responce => responce.json())
+    popularMoviesAPI
+      .fetchPopularMovies()
       .then(movies => setMovies(movies.results));
   }, []);
 
-  console.log(movies);
-
   return (
-    <ul>
-      {movies.map(movie => {
-        return (
-          <li key={movie.id}>
-            <img
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-              alt={movie.title}
-            />
-            <p>{movie.title}</p>
-          </li>
-        );
-      })}
+    <ul className="ImageGallery">
+      {movies &&
+        movies.map(movie => {
+          return (
+            <li key={movie.id} className="ImageGalleryItemIMG">
+              <Link to={`movies/${movie.id}`}>
+                {movie.poster_path ? (
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    alt={movie.title}
+                    className="ImageGalleryItemImage"
+                  />
+                ) : (
+                  <img
+                    src={defaultImages}
+                    alt={movie.title}
+                    width="270"
+                    height="410"
+                  />
+                )}
+                <p>{movie.title}</p>
+              </Link>
+            </li>
+          );
+        })}
     </ul>
   );
 }

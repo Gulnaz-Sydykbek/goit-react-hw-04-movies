@@ -1,9 +1,13 @@
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Container from './Container/Container';
 import Navigation from './Navigation/Navigation';
 
 import HomePage from '../pages/HomePage/HomePage';
+import MoviePage from '../pages/MoviePage/MoviePage';
+import MovieDetailsPage from '../pages/MovieDetailsPage/MovieDetailsPage';
 
 function App() {
   return (
@@ -16,9 +20,17 @@ function App() {
         </Route>
 
         <Route path="/movies" exact>
-          <div>Movies</div>
+          <MoviePage />
         </Route>
+
+        <Route path="/movies/:movieId">
+          <MovieDetailsPage />
+        </Route>
+
+        <Redirect to="/" />
       </Switch>
+
+      <ToastContainer autoClose={3000} />
     </Container>
   );
 }

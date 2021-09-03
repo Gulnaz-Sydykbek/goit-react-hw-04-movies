@@ -1,0 +1,10 @@
+.DetailsContainer {
+  padding-bottom: 20px;
+  display: flex;
+  border-bottom: 1px solid black;
+}
+
+.Image {
+  width: 270px;
+  min-height: 410px;
+}
