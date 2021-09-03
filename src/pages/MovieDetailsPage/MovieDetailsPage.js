@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 import './MovieDetails.css';
 import defaultImages from '../../images/defaultImg.jpg';
 import * as movieDetailsAPI from '../../service/movies-api';
@@ -11,14 +11,17 @@ function MovieDetailsPage() {
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
-    movieDetailsAPI.fetchMovieDetalsPage(movieId).then(setMovie);
+    movieDetailsAPI.fetchMovieDetalsPage(Number(movieId)).then(setMovie);
   }, [movieId]);
 
   console.log(movie);
-  console.log(Number(movieId));
 
   return (
     <>
+      <NavLink to="/">
+          Close
+      </NavLink>
+      
       {movie && (
         <div className="DetailsContainer">
           {movie.poster_path ? (

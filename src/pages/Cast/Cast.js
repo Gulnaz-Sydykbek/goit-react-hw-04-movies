@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
+import { NavLink, Route, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
 import * as moviesCast from '../../service/movies-api';
 
 function Cast(props) {
   const movieId = Number(props.movieId);
+  const {url} = useRouteMatch();
+  console.log(url);
 
   const [actors, setActors] = useState(null);
 
@@ -13,10 +16,20 @@ function Cast(props) {
   console.log(actors);
   return (
     <div>
-      <ul>
-        {actors.map(actor => {
+      <NavLink to={`${url}/cast`}>
+        Cast
+      </NavLink>
+
+      <Route path={`${url}/:cast`}>
+
+        <NavLink to={`${url}`}>
+          Close
+        </NavLink>
+
+        <ul>
+        {actors && actors.map(actor => {
           return (
-            <li key={actor}>
+            <li key={actor.id}>
               <img
                 src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
                 alt={actor.original_name}
@@ -27,6 +40,7 @@ function Cast(props) {
           );
         })}
       </ul>
+      </Route>
     </div>
   );
 }
