@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, NavLink, useRouteMatch, Route } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import './MovieDetails.css';
+import s from './MovieDetails.module.css';
 import * as movieDetailsAPI from '../../service/movies-api';
 import MovieDetailsPageList from './MovieDetailsPageList';
 import Cast from '../Cast/Cast';
@@ -10,6 +10,7 @@ import Reviews from '../Reviews/Reviews';
 function MovieDetailsPage() {
   const { movieId } = useParams();
   const { url, path } = useRouteMatch();
+  const { MainClose, CastRevContainer, LinkContainer, Link, ActiveLink, Close } = s;
 
   const [movie, setMovie] = useState(null);
 
@@ -24,21 +25,21 @@ function MovieDetailsPage() {
 
   return (
     <>
-      <NavLink to="/" className="MainClose">
+      <NavLink to="/" className={MainClose}>
         Go back
       </NavLink>
 
       {movie && <MovieDetailsPageList movie={movie} />}
 
-      <div className="CastRevContainer">
+      <div className={CastRevContainer}>
         <h3>Additional information</h3>
 
-        <ul className="LinkContainer">
+        <ul className={LinkContainer}>
           <li>
             <NavLink
               to={`${url}/cast`}
-              className="Link"
-              activeClassName="ActiveLink"
+              className={Link}
+              activeClassName={ActiveLink}
             >
               Cast
             </NavLink>
@@ -47,8 +48,8 @@ function MovieDetailsPage() {
           <li>
             <NavLink
               to={`${url}/reviews`}
-              className="Link"
-              activeClassName="ActiveLink"
+              className={Link}
+              activeClassName={ActiveLink}
             >
               Reviews
             </NavLink>
@@ -56,7 +57,7 @@ function MovieDetailsPage() {
         </ul>
 
         <Route path={`${path}/cast`}>
-          <NavLink to={`${url}`} className="Close">
+          <NavLink to={`${url}`} className={Close}>
             Close
           </NavLink>
 
@@ -64,7 +65,7 @@ function MovieDetailsPage() {
         </Route>
 
         <Route path={`${path}/reviews`}>
-          <NavLink to={`${url}`} className="Close">
+          <NavLink to={`${url}`} className={Close}>
             Close
           </NavLink>
 

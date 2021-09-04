@@ -1,42 +1,43 @@
 import PropTypes from 'prop-types';
 import defaultImages from '../../images/defaultImg.jpg';
-import './MovieDetails.css';
+import s from './MovieDetails.module.css';
 
 function MovieDetailsPageList(props) {
   const {
     movie: { poster_path, title, release_date, vote_average, overview, genres },
   } = props;
+  const { DetailsContainer, Image, DetailsItems, GenresContainer, GenresItems, DefaultImg, Items } = s;
 
   return (
-    <div className="DetailsContainer">
+    <div className={DetailsContainer}>
       {poster_path ? (
         <img
           src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
           alt={title}
-          className="Image"
+          className={Image}
         />
       ) : (
-        <img src={defaultImages} alt={title} width="270" height="410" />
+        <img src={defaultImages} alt={title} className={DefaultImg} />
       )}
-      <ul className="DetailsItems">
-        <li className="Items">
-          <h2 className="Items">
+      <ul className={DetailsItems}>
+        <li className={Items}>
+          <h2 className={Items}>
             {title} ({release_date.slice(0, 4)})
           </h2>
           <p>User Score: {vote_average * 10}%</p>
         </li>
-        <li className="Items">
-          <h3 className="Items">Overview</h3>
+        <li className={Items}>
+          <h3 className={Items}>Overview</h3>
           <p>{overview}</p>
         </li>
-        <li className="Items">
-          <h3 className="Items">Genres</h3>
-          <ul className="GenresContainer">
+        <li className={Items}>
+          <h3 className={Items}>Genres</h3>
+          <ul className={GenresContainer}>
             {genres.map(genre => {
               const { id, name } = genre;
 
               return (
-                <li className="GenresItems" key={id}>
+                <li className={GenresItems} key={id}>
                   {name}
                 </li>
               );

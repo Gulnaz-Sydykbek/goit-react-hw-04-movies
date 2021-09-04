@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import './Reviews.css';
 
 function ReviewsList(props) {
@@ -7,10 +8,12 @@ function ReviewsList(props) {
     <ul>
       {reviews.length !== 0 ? (
         reviews.map(review => {
+          const { id, content, author } = review;
+
           return (
-            <li key={review.id}>
-              <h4 className="Author">Author: {review.author}</h4>
-              <p className="Review">{review.content}</p>
+            <li key={id}>
+              <h4 className="Author">Author: {author}</h4>
+              <p className="Review">{content}</p>
             </li>
           );
         })
@@ -20,5 +23,15 @@ function ReviewsList(props) {
     </ul>
   );
 }
+
+ReviewsList.propTypes = {
+  reviews: 
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      author: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+    }),
+  
+};
 
 export default ReviewsList;

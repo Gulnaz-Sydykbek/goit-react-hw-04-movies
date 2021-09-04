@@ -1,25 +1,26 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import defaultImages from '../../images/defaultImg.jpg';
-import './HomePage.css';
+import s from './HomePage.module.css';
 
 function HomePageList(props) {
   const { movies } = props;
+  const { Gallery, GalleryItemIMG, GalleryItemImage, TitleName } = s;
 
   return (
-    <ul className="ImageGallery">
+    <ul className={Gallery}>
       {movies &&
         movies.map(movie => {
           const { id, poster_path, title } = movie;
 
           return (
-            <li key={id} className="ImageGalleryItemIMG">
+            <li key={id} className={GalleryItemIMG}>
               <Link to={`movies/${id}`}>
                 {poster_path ? (
                   <img
                     src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
                     alt={title}
-                    className="ImageGalleryItemImage"
+                    className={GalleryItemImage}
                   />
                 ) : (
                   <img
@@ -29,7 +30,7 @@ function HomePageList(props) {
                     height="410"
                   />
                 )}
-                <p className="TitleName">{title}</p>
+                <p className={TitleName}>{title}</p>
               </Link>
             </li>
           );
