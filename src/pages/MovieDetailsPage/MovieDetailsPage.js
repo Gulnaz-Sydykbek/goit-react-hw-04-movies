@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useParams, NavLink, useRouteMatch, Route } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Loader from '../../components/Loader/Loader';
 import s from './MovieDetails.module.css';
 import * as movieDetailsAPI from '../../service/movies-api';
 import MovieDetailsPageList from './MovieDetailsPageList';
-import Cast from '../Cast/Cast';
-import Reviews from '../Reviews/Reviews';
+
+const Cast = lazy(() => import('../Cast/Cast' /* webpackChunkName: "Cast"*/),);
+const Reviews = lazy(() => import('../Reviews/Reviews' /* webpackChunkName: "Reviews"*/),);
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -56,21 +58,23 @@ function MovieDetailsPage() {
           </li>
         </ul>
 
-        <Route path={`${path}/cast`}>
-          <NavLink to={`${url}`} className={Close}>
-            Close
-          </NavLink>
+        <Suspense fallback={<Loader />}>
+          <Route path={`${path}/cast`}>
+            <NavLink to={`${url}`} className={Close}>
+              Close
+            </NavLink>
 
-          <Cast />
-        </Route>
+            <Cast />
+          </Route>
 
-        <Route path={`${path}/reviews`}>
-          <NavLink to={`${url}`} className={Close}>
-            Close
-          </NavLink>
+          <Route path={`${path}/reviews`}>
+            <NavLink to={`${url}`} className={Close}>
+              Close
+            </NavLink>
 
-          <Reviews />
-        </Route>
+            <Reviews />
+          </Route>
+        </Suspense>
       </div>
     </>
   );
