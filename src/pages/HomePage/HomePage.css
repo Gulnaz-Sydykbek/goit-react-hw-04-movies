@@ -27,3 +27,16 @@
   min-height: 410px;
   object-fit: cover;
 }
+
+.DefaultImg {
+  width: 100%;
+  min-height: 410px;
+}
+
+.TitleName {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  color: #2a363b;
+}
