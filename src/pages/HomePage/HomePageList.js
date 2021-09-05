@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import defaultImages from '../../images/defaultImg.jpg';
 import s from './HomePage.module.css';
 
 function HomePageList(props) {
   const { movies } = props;
+  const location = useLocation();
   const { Gallery, GalleryItemIMG, GalleryItemImage, TitleName } = s;
 
   return (
@@ -15,7 +16,12 @@ function HomePageList(props) {
 
           return (
             <li key={id} className={GalleryItemIMG}>
-              <Link to={`movies/${id}`}>
+              <Link
+                to={{
+                  pathname: `movies/${id}`,
+                  state: { from: location, search: 'homePage' },
+                }}
+              >
                 {poster_path ? (
                   <img
                     src={`https://image.tmdb.org/t/p/w500/${poster_path}`}

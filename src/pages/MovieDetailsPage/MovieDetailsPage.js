@@ -1,18 +1,36 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { useParams, NavLink, useRouteMatch, Route } from 'react-router-dom';
+import {
+  useParams,
+  NavLink,
+  useRouteMatch,
+  Route,
+  useLocation,
+  useHistory,
+} from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../../components/Loader/Loader';
 import s from './MovieDetails.module.css';
 import * as movieDetailsAPI from '../../service/movies-api';
 import MovieDetailsPageList from './MovieDetailsPageList';
 
-const Cast = lazy(() => import('../Cast/Cast' /* webpackChunkName: "Cast"*/),);
-const Reviews = lazy(() => import('../Reviews/Reviews' /* webpackChunkName: "Reviews"*/),);
+const Cast = lazy(() => import('../Cast/Cast' /* webpackChunkName: "Cast"*/));
+const Reviews = lazy(() =>
+  import('../Reviews/Reviews' /* webpackChunkName: "Reviews"*/),
+);
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
   const { url, path } = useRouteMatch();
-  const { MainClose, CastRevContainer, LinkContainer, Link, ActiveLink, Close } = s;
+  const location = useLocation();
+  const history = useHistory();
+  const {
+    MainClose,
+    CastRevContainer,
+    LinkContainer,
+    Link,
+    ActiveLink,
+    Close,
+  } = s;
 
   const [movie, setMovie] = useState(null);
 
@@ -25,11 +43,30 @@ function MovieDetailsPage() {
       });
   }, [movieId]);
 
+  const onGoBack = () => {
+    if (location.state.from.pathname === `/movies/${movieId}`) {
+      if (location.state.from.state.search === 'homePage') {
+        history.push('/');
+      }
+
+      if (location.state.from.state.search === 'moviePage') {
+        history.push('/movies');
+      }
+    }
+
+    if (
+      location.state.from.pathname === '/' ||
+      location.state.from.pathname === '/movies'
+    ) {
+      history.push(location?.state?.from ?? '/');
+    }
+  };
+
   return (
     <>
-      <NavLink to="/" className={MainClose}>
+      <button type="button" onClick={onGoBack} className={MainClose}>
         Go back
-      </NavLink>
+      </button>
 
       {movie && <MovieDetailsPageList movie={movie} />}
 
@@ -39,7 +76,7 @@ function MovieDetailsPage() {
         <ul className={LinkContainer}>
           <li>
             <NavLink
-              to={`${url}/cast`}
+              to={{ pathname: `${url}/cast`, state: { from: location } }}
               className={Link}
               activeClassName={ActiveLink}
             >
@@ -49,7 +86,7 @@ function MovieDetailsPage() {
 
           <li>
             <NavLink
-              to={`${url}/reviews`}
+              to={{ pathname: `${url}/reviews`, state: { from: location } }}
               className={Link}
               activeClassName={ActiveLink}
             >
