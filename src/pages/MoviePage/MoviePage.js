@@ -32,6 +32,7 @@ function MoviePage() {
   const handleFormSubmit = movieName => {
     setMovieName(movieName);
     setStatus('idle');
+    setMovies(null);
   };
 
   return (
