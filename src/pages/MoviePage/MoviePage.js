@@ -5,7 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import MoviePageList from './MoviePageList';
 import Loader from '../../components/Loader/Loader';
 
-export default function MoviesView() {
+export default function MoviesView(props) {
   const history = useHistory();
   const location = useLocation();
 
@@ -14,8 +14,6 @@ export default function MoviesView() {
   const [page, setPage] = useState(1);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState('idle');
-
-  console.log(location.search);
 
   useEffect(() => {
     if (location.search === '') {
@@ -62,7 +60,13 @@ export default function MoviesView() {
 
       {error && <p>Something went wrong. Try again</p>}
       {status === 'pending' && <Loader />}
-      {status === 'resolved' && <MoviePageList movies={movies} />}
+      {status === 'resolved' && (
+        <MoviePageList
+          movies={movies}
+          locationSearch={location.search}
+          location={props.location}
+        />
+      )}
     </div>
   );
 }

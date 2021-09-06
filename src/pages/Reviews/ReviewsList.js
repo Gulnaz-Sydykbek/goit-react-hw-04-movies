@@ -25,13 +25,13 @@ function ReviewsList(props) {
 }
 
 ReviewsList.propTypes = {
-  reviews: 
+  movies: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       author: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
     }),
-  
+  ),
 };
 
 export default ReviewsList;

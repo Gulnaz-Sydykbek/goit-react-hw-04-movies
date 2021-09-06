@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import * as popularMoviesAPI from '../../service/movies-api';
 import HomePageList from './HomePageList';
 
-function HomePage() {
+function HomePage(props) {
   const [movies, setMovies] = useState(null);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function HomePage() {
 
   return (
     <div>
-      <HomePageList movies={movies} />
+      <HomePageList movies={movies} location={props.location} />
     </div>
   );
 }

@@ -20,7 +20,13 @@ function MoviePageList(props) {
             <Link
               to={{
                 pathname: `${url}/${id}`,
-                state: { from: location, search: 'moviePage' },
+                state: {
+                  search:
+                    location && props.locationSearch
+                      ? props.locationSearch
+                      : '',
+                  from: props.location.pathname,
+                },
               }}
             >
               {poster_path ? (

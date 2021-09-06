@@ -5,7 +5,6 @@ import {
   useRouteMatch,
   Route,
   useLocation,
-  useHistory,
 } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../../components/Loader/Loader';
@@ -22,7 +21,6 @@ function MovieDetailsPage(props) {
   const { movieId } = useParams();
   const { url, path } = useRouteMatch();
   const location = useLocation();
-  const history = useHistory();
   const {
     MainClose,
     CastRevContainer,
@@ -33,7 +31,8 @@ function MovieDetailsPage(props) {
   } = s;
 
   const [movie, setMovie] = useState(null);
-  const [wayName, setWayName] = useState('');
+  const [from, setFrom] = useState('');
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     movieDetailsAPI
@@ -42,36 +41,20 @@ function MovieDetailsPage(props) {
       .catch(error => {
         toast.error('Something went wrong. Please, try again.');
       });
-
-    setWayName(props.location.state.from.pathname);
   }, [movieId]);
 
-  console.log(location.state.from.pathname === `${wayName}`);
-  console.log(location.state.from.pathname);
-  console.log(wayName);
+  useEffect(() => {
+    setFrom(location.state && location.state.from ? location.state.from : '/');
+    setSearch(
+      location.state && location.state.search ? location.state.search : '',
+    );
+  }, [location.state]);
 
-  const onGoBack = () => {
-    history.push(location?.state?.from ?? '/');
-  };
-
-  /*const onGoBack = () => {
-    if (location.state.from.pathname === `/movies/${movieId}`) {
-      if (location.state.from.state.search === 'homePage') {
-        history.push('/');
-      }
-
-      if (location.state.from.state.search === 'moviePage') {
-        history.push('/movies');
-      }
-    }
-
-    if (
-      location.state.from.pathname === '/' ||
-      location.state.from.pathname === '/movies'
-    ) {
-      history.push(location?.state?.from ?? '/');
-    }
-  };*/
+  const onGoBack = () =>
+    props.history.push({
+      pathname: from,
+      search: search,
+    });
 
   return (
     <>
@@ -87,7 +70,10 @@ function MovieDetailsPage(props) {
         <ul className={LinkContainer}>
           <li>
             <NavLink
-              to={{ pathname: `${url}/cast`, state: { from: location } }}
+              to={{
+                pathname: `${url}/cast`,
+                state: { from: from, search: search },
+              }}
               className={Link}
               activeClassName={ActiveLink}
             >
@@ -97,7 +83,10 @@ function MovieDetailsPage(props) {
 
           <li>
             <NavLink
-              to={{ pathname: `${url}/reviews`, state: { from: location } }}
+              to={{
+                pathname: `${url}/reviews`,
+                state: { from: from, search: search },
+              }}
               className={Link}
               activeClassName={ActiveLink}
             >
@@ -109,7 +98,7 @@ function MovieDetailsPage(props) {
         <Suspense fallback={<Loader />}>
           <Route path={`${path}/cast`}>
             <NavLink
-              to={{ pathname: `${url}`, state: { from: location } }}
+              to={{ pathname: `${url}`, state: { from: from, search: search } }}
               className={Close}
             >
               Close
@@ -120,7 +109,7 @@ function MovieDetailsPage(props) {
 
           <Route path={`${path}/reviews`}>
             <NavLink
-              to={{ pathname: `${url}`, state: { from: location } }}
+              to={{ pathname: `${url}`, state: { from: from, search: search } }}
               className={Close}
             >
               Close
