@@ -7,9 +7,17 @@ import Loader from './Loader/Loader';
 import Container from './Container/Container';
 import Navigation from './Navigation/Navigation';
 
-const HomePage = lazy(() => import('../pages/HomePage/HomePage' /* webpackChunkName: "HomePage"*/),);
-const MoviePage = lazy(() => import('../pages/MoviePage/MoviePage' /* webpackChunkName: "MoviePage"*/),);
-const MovieDetailsPage = lazy(() => import('../pages/MovieDetailsPage/MovieDetailsPage' /* webpackChunkName: "MovieDetailsPage"*/),);
+const HomePage = lazy(() =>
+  import('../pages/HomePage/HomePage' /* webpackChunkName: "HomePage"*/),
+);
+const MoviePage = lazy(() =>
+  import('../pages/MoviePage/MoviePage' /* webpackChunkName: "MoviePage"*/),
+);
+const MovieDetailsPage = lazy(() =>
+  import(
+    '../pages/MovieDetailsPage/MovieDetailsPage' /* webpackChunkName: "MovieDetailsPage"*/
+  ),
+);
 
 function App() {
   return (
@@ -18,17 +26,9 @@ function App() {
 
       <Suspense fallback={<Loader />}>
         <Switch>
-          <Route path="/" exact>
-            <HomePage />
-          </Route>
-
-          <Route path="/movies" exact>
-            <MoviePage />
-          </Route>
-
-          <Route path="/movies/:movieId">
-            <MovieDetailsPage />
-          </Route>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/movies" component={MoviePage} />
+          <Route path="/movies/:movieId" component={MovieDetailsPage} />
 
           <Redirect to="/" />
         </Switch>

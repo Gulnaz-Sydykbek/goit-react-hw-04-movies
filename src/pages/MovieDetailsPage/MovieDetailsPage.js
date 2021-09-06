@@ -18,7 +18,7 @@ const Reviews = lazy(() =>
   import('../Reviews/Reviews' /* webpackChunkName: "Reviews"*/),
 );
 
-function MovieDetailsPage() {
+function MovieDetailsPage(props) {
   const { movieId } = useParams();
   const { url, path } = useRouteMatch();
   const location = useLocation();
@@ -33,6 +33,7 @@ function MovieDetailsPage() {
   } = s;
 
   const [movie, setMovie] = useState(null);
+  const [wayName, setWayName] = useState('');
 
   useEffect(() => {
     movieDetailsAPI
@@ -41,9 +42,19 @@ function MovieDetailsPage() {
       .catch(error => {
         toast.error('Something went wrong. Please, try again.');
       });
+
+    setWayName(props.location.state.from.pathname);
   }, [movieId]);
 
+  console.log(location.state.from.pathname === `${wayName}`);
+  console.log(location.state.from.pathname);
+  console.log(wayName);
+
   const onGoBack = () => {
+    history.push(location?.state?.from ?? '/');
+  };
+
+  /*const onGoBack = () => {
     if (location.state.from.pathname === `/movies/${movieId}`) {
       if (location.state.from.state.search === 'homePage') {
         history.push('/');
@@ -60,7 +71,7 @@ function MovieDetailsPage() {
     ) {
       history.push(location?.state?.from ?? '/');
     }
-  };
+  };*/
 
   return (
     <>
@@ -97,7 +108,10 @@ function MovieDetailsPage() {
 
         <Suspense fallback={<Loader />}>
           <Route path={`${path}/cast`}>
-            <NavLink to={`${url}`} className={Close}>
+            <NavLink
+              to={{ pathname: `${url}`, state: { from: location } }}
+              className={Close}
+            >
               Close
             </NavLink>
 
@@ -105,7 +119,10 @@ function MovieDetailsPage() {
           </Route>
 
           <Route path={`${path}/reviews`}>
-            <NavLink to={`${url}`} className={Close}>
+            <NavLink
+              to={{ pathname: `${url}`, state: { from: location } }}
+              className={Close}
+            >
               Close
             </NavLink>
 
